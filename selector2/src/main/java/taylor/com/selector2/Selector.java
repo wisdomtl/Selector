@@ -109,8 +109,11 @@ public abstract class Selector extends FrameLayout implements View.OnClickListen
     public boolean switchSelector() {
         boolean isSelect = this.isSelected();
         this.setSelected(!isSelect);
+        onSwitchSelected(!isSelect);
         return !isSelect;
     }
+
+    protected abstract void onSwitchSelected(boolean isSelect);
 
     @Override
     public int hashCode() {
