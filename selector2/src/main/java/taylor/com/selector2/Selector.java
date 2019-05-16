@@ -20,7 +20,7 @@ public abstract class Selector extends FrameLayout implements View.OnClickListen
     /**
      * the unique tag for a selector
      */
-    private String tag;
+    private String tag = "default tag";
     /**
      * the group which this Selector belongs to
      */
