@@ -20,7 +20,7 @@ public abstract class Selector extends FrameLayout implements View.OnClickListen
     /**
      * the unique tag for a selector
      */
-    private String tag = "default tag";
+    private String tag ;
     /**
      * the group which this Selector belongs to
      */
@@ -59,6 +59,8 @@ public abstract class Selector extends FrameLayout implements View.OnClickListen
             tag = typedArray.getString(R.styleable.Selector_tag);
             onBindView(text, iconResId, selectorResId, textColor, textSize);
             typedArray.recycle();
+        }else {
+            tag = "default tag";
         }
     }
 
