@@ -7,8 +7,8 @@ import android.widget.Toast;
 import taylor.com.selector2.Selector;
 import taylor.com.selector2.SelectorGroup;
 
-public class MainActivity extends AppCompatActivity implements Selector.OnSelectorStateListener {
-    private SelectorGroup selectorGroup = new SelectorGroup();
+public class MainActivity extends AppCompatActivity implements SelectorGroup.onStateChangeListener{
+    private SelectorGroup selectorGroup = new SelectorGroup(SelectorGroup.MODE_SINGLE_CHOICE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,15 +22,14 @@ public class MainActivity extends AppCompatActivity implements Selector.OnSelect
         Selector manSelector = findViewById(R.id.selector_20);
         Selector oldManSelector = findViewById(R.id.selector_30);
 
-        teenageSelector.setOnSelectorStateListener(this).setSelectorGroup(selectorGroup);
-        manSelector.setOnSelectorStateListener(this).setSelectorGroup(selectorGroup);
-        oldManSelector.setOnSelectorStateListener(this).setSelectorGroup(selectorGroup);
+        teenageSelector.setSelectorGroup(selectorGroup);
+        manSelector.setSelectorGroup(selectorGroup);
+        oldManSelector.setSelectorGroup(selectorGroup);
     }
 
     @Override
-    public void onStateChange(Selector selector, boolean isSelect) {
-        String tag = selector.getTag();
-        if (isSelect) {
+    public void onSelectorStateChange(String tag, boolean isSelected) {
+        if (isSelected) {
             Toast.makeText(this, tag + " is selected", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, tag + " is unselected", Toast.LENGTH_SHORT).show();

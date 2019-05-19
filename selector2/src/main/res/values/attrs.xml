@@ -8,4 +8,4 @@
         <attr name="text_color" format="color" />
         <attr name="tag" format="string" />
     </declare-styleable>
-</resources>
+    </resources>

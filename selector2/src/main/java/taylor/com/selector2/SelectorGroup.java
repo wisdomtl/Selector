@@ -1,38 +1,61 @@
 package taylor.com.selector2;
 
+import android.view.View;
+
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * a select state controller
+ * it controls the states between several choices which is a {@link Selector},
+ * there are two modes: {@link #MODE_SINGLE_CHOICE} act as RadioButton + RadioGroup ,{@link #MODE_MULTIPLE_CHOICE } act as CheckBox
+ * the advantage of this class is it don't need to be the parent view of several choices, thus you could place the choices whatever your like
  */
 public class SelectorGroup {
+    public static final int MODE_SINGLE_CHOICE = 1;
+    public static final int MODE_MULTIPLE_CHOICE = 2;
 
     private Set<Selector> selectors = new HashSet<>();
+    private ChoiceAction choiceMode;
+    private onStateChangeListener onStateChangeListener;
 
-    public void addSelector(Selector selector) {
-        selectors.add(selector);
-    }
-
-    /**
-     * set one Selector selected by tag
-     * @param tag
-     */
-    public void setSelected(String tag) {
-        for (Selector s : selectors) {
-            if (s.getTag().equals(tag)) {
-                s.switchSelector();
-            }
+    public SelectorGroup(int mode) {
+        switch (mode) {
+            case MODE_MULTIPLE_CHOICE:
+                choiceMode = new MultipleChoiceAction();
+                break;
+            case MODE_SINGLE_CHOICE:
+                choiceMode = new SingleChoiceAction();
+                break;
+            default:
+                choiceMode = new SingleChoiceAction();
         }
     }
 
+    public void setChoiceMode(ChoiceAction choiceMode) {
+        this.choiceMode = choiceMode;
+    }
+
     /**
-     * ensure just one Selector in this group is selected at one time
-     *
-     * @param selector the Selector which is selected right now
+     * toggle or cancel one choice
+     * @param selected
+     * @param selector
      */
-    public void setSelected(Selector selector) {
-        cancelPreSelector(selector);
+    public void setSelected(boolean selected, Selector selector) {
+        if (selector == null) {
+            return;
+        }
+        selector.setSelected(selected);
+        if (onStateChangeListener != null) {
+            onStateChangeListener.onSelectorStateChange(selector.getSelectorTag(), selected);
+        }
+    }
+
+    public void setOnStateChangeListener(SelectorGroup.onStateChangeListener onStateChangeListener) {
+        this.onStateChangeListener = onStateChangeListener;
+    }
+
+    public void addSelector(Selector selector) {
+        selectors.add(selector);
     }
 
     /**
@@ -40,31 +63,65 @@ public class SelectorGroup {
      *
      * @param selector the Selector which is selected right now
      */
-    private void cancelPreSelector(Selector selector) {
+    private void cancelPreSelector(View selector) {
         for (Selector s : selectors) {
             if (!s.equals(selector) && s.isSelected()) {
-                s.switchSelector();
+                s.setSelected(false);
+                if (onStateChangeListener != null) {
+                    onStateChangeListener.onSelectorStateChange(s.getSelectorTag(), false);
+                }
             }
         }
     }
 
     /**
-     * get the selected one
+     * add extra layer which means more complex
      *
-     * @return
+     * @param selector
      */
-    public Selector getSelected() {
-        for (Selector s : selectors) {
-            if (s.isSelected()) {
-                return s;
-            }
+    public void onSelectorClick(Selector selector) {
+        if (choiceMode != null) {
+            choiceMode.onChoose(selector);
         }
-        return null;
     }
 
     public void clear() {
         if (selectors != null) {
             selectors.clear();
         }
+    }
+
+    private interface ChoiceAction {
+        void onChoose(Selector selector);
+    }
+
+    /**
+     * pre-defined choice mode: previous choice will be canceled if there is a new choice
+     */
+    private class SingleChoiceAction implements ChoiceAction {
+
+        @Override
+        public void onChoose(Selector selector) {
+            selector.setSelected(true);
+            cancelPreSelector(selector);
+            if (onStateChangeListener != null) {
+                onStateChangeListener.onSelectorStateChange(selector.getSelectorTag(), true);
+            }
+        }
+    }
+
+    /**
+     * pre-defined choice mode: all choices will be preserved
+     */
+    private class MultipleChoiceAction implements ChoiceAction {
+
+        @Override
+        public void onChoose(Selector selector) {
+
+        }
+    }
+
+    public interface onStateChangeListener {
+        void onSelectorStateChange(String tag, boolean isSelected);
     }
 }
