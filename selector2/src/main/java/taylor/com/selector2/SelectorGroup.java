@@ -7,8 +7,9 @@ import java.util.Set;
 
 /**
  * it controls the states between several choices which is a {@link Selector},
- * there are two modes: {@link #MODE_SINGLE_CHOICE} act as RadioButton + RadioGroup ,{@link #MODE_MULTIPLE_CHOICE } act as CheckBox
+ * there are two modes by default: {@link #MODE_SINGLE_CHOICE} act as RadioButton + RadioGroup ,{@link #MODE_MULTIPLE_CHOICE } act as CheckBox
  * the advantage of this class is it don't need to be the parent view of several choices, thus you could place the choices whatever your like
+ * and choice mode could be extends by implementing {#link #ChoiceAction} interface
  */
 public class SelectorGroup {
     public static final int MODE_SINGLE_CHOICE = 1;
@@ -16,61 +17,52 @@ public class SelectorGroup {
 
     private Set<Selector> selectors = new HashSet<>();
     private ChoiceAction choiceMode;
-    private OnStateChangeListener onStateChangeListener;
+    private StateListener onStateChangeListener;
 
-    public SelectorGroup(int mode) {
-        switch (mode) {
-            case MODE_MULTIPLE_CHOICE:
-                choiceMode = new MultipleChoiceAction();
-                break;
-            case MODE_SINGLE_CHOICE:
-                choiceMode = new SingleChoiceAction();
-                break;
-            default:
-                choiceMode = new SingleChoiceAction();
-        }
-    }
-
+    /**
+     * customized an choice mode by yourself
+     * @param choiceMode
+     */
     public void setChoiceMode(ChoiceAction choiceMode) {
         this.choiceMode = choiceMode;
     }
 
     /**
-     * toggle or cancel one choice
-     *
-     * @param selected
-     * @param selector
+     * set a default choice mode
+     * @param mode
      */
-    public void setSelected(boolean selected, Selector selector) {
-        if (selector == null) {
-            return;
-        }
-        selector.setSelected(selected);
-        if (onStateChangeListener != null) {
-            onStateChangeListener.onSelectorStateChange(selector.getSelectorTag(), selected);
+    public void setChoiceMode(int mode) {
+        switch (mode) {
+            case MODE_MULTIPLE_CHOICE:
+                choiceMode = new MultipleAction();
+                break;
+            case MODE_SINGLE_CHOICE:
+                choiceMode = new SingleAction();
+                break;
         }
     }
 
-    public void setOnStateChangeListener(OnStateChangeListener onStateChangeListener) {
+    public void setStateListener(StateListener onStateChangeListener) {
         this.onStateChangeListener = onStateChangeListener;
     }
 
-    public void addSelector(Selector selector) {
+    void addSelector(Selector selector) {
         selectors.add(selector);
     }
 
     /**
      * cancel selected state of one Selector when another is selected
      *
-     * @param selector the Selector which is selected right now
+     * @param selector  the Selector which is selected right now
+     * @param selectors the all Selectors which belongs to a SelectorGroup
      */
-    private void cancelPreSelector(View selector) {
+    private void cancelPreSelector(View selector, Set<Selector> selectors) {
         for (Selector s : selectors) {
             if (!s.equals(selector) && s.isSelected()) {
                 s.setSelected(false);
-                if (onStateChangeListener != null) {
-                    onStateChangeListener.onSelectorStateChange(s.getSelectorTag(), false);
-                }
+//                if (onStateChangeListener != null) {
+//                    onStateChangeListener.onStateChange(s.getSelectorTag(), false);
+//                }
             }
         }
     }
@@ -80,9 +72,9 @@ public class SelectorGroup {
      *
      * @param selector
      */
-    public void onSelectorClick(Selector selector) {
+    void onSelectorClick(Selector selector) {
         if (choiceMode != null) {
-            choiceMode.onChoose(selector);
+            choiceMode.onChoose(selectors, selector, onStateChangeListener);
         }
     }
 
@@ -92,21 +84,21 @@ public class SelectorGroup {
         }
     }
 
-    private interface ChoiceAction {
-        void onChoose(Selector selector);
+    public interface ChoiceAction {
+        void onChoose(Set<Selector> selectors, Selector selector, StateListener stateListener);
     }
 
     /**
      * pre-defined choice mode: previous choice will be canceled if there is a new choice
      */
-    private class SingleChoiceAction implements ChoiceAction {
+    private class SingleAction implements ChoiceAction {
 
         @Override
-        public void onChoose(Selector selector) {
+        public void onChoose(Set<Selector> selectors, Selector selector, StateListener stateListener) {
             selector.setSelected(true);
-            cancelPreSelector(selector);
-            if (onStateChangeListener != null) {
-                onStateChangeListener.onSelectorStateChange(selector.getSelectorTag(), true);
+            cancelPreSelector(selector, selectors);
+            if (stateListener != null) {
+                stateListener.onStateChange(selector.getSelectorTag(), true);
             }
         }
     }
@@ -114,19 +106,19 @@ public class SelectorGroup {
     /**
      * pre-defined choice mode: all choices will be preserved
      */
-    private class MultipleChoiceAction implements ChoiceAction {
+    private class MultipleAction implements ChoiceAction {
 
         @Override
-        public void onChoose(Selector selector) {
+        public void onChoose(Set<Selector> selectors, Selector selector, StateListener stateListener) {
             boolean isSelected = selector.isSelected();
             selector.setSelected(!isSelected);
-            if (onStateChangeListener != null) {
-                onStateChangeListener.onSelectorStateChange(selector.getSelectorTag(), !isSelected);
+            if (stateListener != null) {
+                stateListener.onStateChange(selector.getSelectorTag(), !isSelected);
             }
         }
     }
 
-    public interface OnStateChangeListener {
-        void onSelectorStateChange(String tag, boolean isSelected);
+    public interface StateListener {
+        void onStateChange(String tag, boolean isSelected);
     }
 }

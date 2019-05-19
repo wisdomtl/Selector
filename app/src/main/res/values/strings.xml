@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Selector</string>
+
+    <string name="tag_man">man</string>
+    <string name="tag_old_man">old man</string>
+    <string name="tag_teenager">teenager</string>
+    <string name="tag_single_man">single man</string>
+    <string name="tag_single_old_man">single old man</string>
+    <string name="tag_single_teenager">single teenager</string>
+
+    <string name="tag_starters_pork">starters_pork</string>
+    <string name="tag_starters_duck">starters_duck</string>
+    <string name="tag_starters_springRoll">starters_springRoll</string>
+    <string name="tag_main_pizza">main_pizza</string>
+    <string name="tag_main_pasta">main_pasta</string>
+    <string name="tag_soup_mushroom">soup_mushroom</string>
+    <string name="tag_soup_scampi">soup_scampi</string>
 </resources>

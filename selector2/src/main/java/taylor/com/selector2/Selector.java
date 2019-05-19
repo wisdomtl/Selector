@@ -41,7 +41,8 @@ public abstract class Selector extends FrameLayout implements View.OnClickListen
         //read declared attributes
         if (attrs != null) {
             TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.Selector);
-            tag = typedArray.getString(R.styleable.Selector_tag);
+            int tagResId = typedArray.getResourceId(R.styleable.Selector_tag, 0);
+            tag = context.getString(tagResId);
             onObtainAttrs(typedArray);
             typedArray.recycle();
         } else {
@@ -64,7 +65,7 @@ public abstract class Selector extends FrameLayout implements View.OnClickListen
      * @param selectorGroup
      * @return
      */
-    public Selector setSelectorGroup(SelectorGroup selectorGroup) {
+    public Selector setGroup(SelectorGroup selectorGroup) {
         this.selectorGroup = selectorGroup;
         selectorGroup.addSelector(this);
         return this;

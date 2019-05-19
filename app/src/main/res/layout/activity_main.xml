@@ -6,22 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <android.support.constraint.Guideline
-        android:id="@+id/gl_center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".5" />
 
+    <!--multiple-choice-->
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/tvMultiple"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Selector age"
-        android:textSize="30sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="15dp"
+        android:text="multiple-choice mode"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <taylor.com.selector.AgeSelector
@@ -30,47 +26,311 @@
         android:layout_height="0dp"
         app:img="@mipmap/teenage"
         app:indicator="@drawable/age_selctor_shape"
-        app:layout_constraintBottom_toTopOf="@id/gl_center"
         app:layout_constraintDimensionRatio="122:150"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_percent=".338"
-        app:tag="teenage"
+        app:layout_constraintTop_toBottomOf="@id/tvMultiple"
+        app:layout_constraintWidth_percent=".15"
+        app:tag="@string/tag_teenager"
         app:text="teenage"
         app:text_color="#FF222222"
-        app:text_size="16" />
+        app:text_size="12" />
 
     <taylor.com.selector.AgeSelector
         android:id="@+id/selector_20"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="70dp"
         app:img="@mipmap/man"
         app:indicator="@drawable/age_selctor_shape"
         app:layout_constraintDimensionRatio="122:150"
         app:layout_constraintEnd_toStartOf="@id/selector_30"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/gl_center"
-        app:layout_constraintWidth_percent=".338"
-        app:tag="man"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent=".15"
+        app:tag="@string/tag_man"
         app:text="man"
         app:text_color="#FF222222"
-        app:text_size="16" />
+        app:text_size="12" />
 
     <taylor.com.selector.AgeSelector
         android:id="@+id/selector_30"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="70dp"
         app:img="@mipmap/old_man"
         app:indicator="@drawable/age_selctor_shape"
         app:layout_constraintDimensionRatio="122:150"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toEndOf="@id/selector_20"
-        app:layout_constraintTop_toBottomOf="@id/gl_center"
-        app:layout_constraintWidth_percent=".338"
-        app:tag="old man"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent=".15"
+        app:tag="@string/tag_old_man"
         app:text="old man"
         app:text_color="#FF222222"
-        app:text_size="16" />
+        app:text_size="12" />
+
+
+    <!--single-choice-->
+    <TextView
+        android:id="@+id/tvSingle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:text="single-choice mode"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/selector_30" />
+
+    <taylor.com.selector.AgeSelector
+        android:id="@+id/single10"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:img="@mipmap/teenage"
+        app:indicator="@drawable/age_selctor_shape"
+        app:layout_constraintDimensionRatio="122:150"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSingle"
+        app:layout_constraintWidth_percent=".15"
+        app:tag="@string/tag_single_teenager"
+        app:text="teenage"
+        app:text_color="#FF222222"
+        app:text_size="12" />
+
+    <taylor.com.selector.AgeSelector
+        android:id="@+id/single20"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
+        app:img="@mipmap/man"
+        app:indicator="@drawable/age_selctor_shape"
+        app:layout_constraintDimensionRatio="122:150"
+        app:layout_constraintEnd_toStartOf="@id/single30"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSingle"
+        app:layout_constraintWidth_percent=".15"
+        app:tag="@string/tag_single_man"
+        app:text="man"
+        app:text_color="#FF222222"
+        app:text_size="12" />
+
+    <taylor.com.selector.AgeSelector
+        android:id="@+id/single30"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
+        app:img="@mipmap/old_man"
+        app:indicator="@drawable/age_selctor_shape"
+        app:layout_constraintDimensionRatio="122:150"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toEndOf="@id/single20"
+        app:layout_constraintTop_toBottomOf="@id/tvSingle"
+        app:layout_constraintWidth_percent=".15"
+        app:tag="@string/tag_single_old_man"
+        app:text="old man"
+        app:text_color="#FF222222"
+        app:text_size="12" />
+
+    <!--order-choice-->
+    <TextView
+        android:id="@+id/tvOrderChoice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:text="order-choice mode"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/single30" />
+
+    <TextView
+        android:id="@+id/tvStarters"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Starters"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="14sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvOrderChoice" />
+
+    <taylor.com.selector.OrderSelector
+        android:id="@+id/selector_starters_duck"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:img="@drawable/duck"
+        app:indicator="@drawable/love"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@id/selector_starters_pork"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvStarters"
+        app:layout_constraintWidth_percent=".15"
+        app:tag="@string/tag_starters_duck"
+        app:text="duck"
+        app:text_color="#FF222222"
+        app:text_size="12" />
+
+    <taylor.com.selector.OrderSelector
+        android:id="@+id/selector_starters_pork"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:img="@drawable/pork"
+        app:indicator="@drawable/love"
+        app:layout_constraintBottom_toBottomOf="@id/selector_starters_duck"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@id/selector_starters_springRoll"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toEndOf="@id/selector_starters_duck"
+        app:layout_constraintTop_toTopOf="@id/selector_starters_duck"
+        app:layout_constraintWidth_percent=".15"
+        app:tag="@string/tag_starters_pork"
+        app:text="pork"
+        app:text_color="#FF222222"
+        app:text_size="12" />
+
+    <taylor.com.selector.OrderSelector
+        android:id="@+id/selector_starters_springRoll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:img="@drawable/spring_roll"
+        app:indicator="@drawable/love"
+        app:layout_constraintBottom_toBottomOf="@id/selector_starters_duck"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toEndOf="@id/selector_starters_pork"
+        app:layout_constraintTop_toTopOf="@id/selector_starters_duck"
+        app:layout_constraintWidth_percent=".15"
+        app:tag="@string/tag_starters_springRoll"
+        app:text="spring roll"
+        app:text_color="#FF222222"
+        app:text_size="12" />
+
+    <View
+        android:id="@+id/vDivider1"
+        android:layout_width="0dp"
+        android:layout_height="1px"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="#999999"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/selector_starters_pork"
+        app:layout_constraintWidth_percent=".7" />
+
+    <TextView
+        android:id="@+id/tvMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Main"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="14sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vDivider1" />
+
+    <taylor.com.selector.OrderSelector
+        android:id="@+id/selector_main_pizza"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:img="@drawable/pizza"
+        app:indicator="@drawable/love"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@id/selector_main_pasta"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvMain"
+        app:layout_constraintWidth_percent=".15"
+        app:tag="@string/tag_main_pizza"
+        app:text="pizza"
+        app:text_color="#FF222222"
+        app:text_size="12" />
+
+    <taylor.com.selector.OrderSelector
+        android:id="@+id/selector_main_pasta"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:img="@drawable/pasta"
+        app:indicator="@drawable/love"
+        app:layout_constraintBottom_toBottomOf="@id/selector_main_pizza"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toEndOf="@id/selector_main_pizza"
+        app:layout_constraintTop_toTopOf="@id/selector_main_pizza"
+        app:layout_constraintWidth_percent=".15"
+        app:tag="@string/tag_main_pasta"
+        app:text="pasta"
+        app:text_color="#FF222222"
+        app:text_size="12" />
+
+    <View
+        android:id="@+id/vDivider2"
+        android:layout_width="0dp"
+        android:layout_height="1px"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="#999999"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/selector_main_pasta"
+        app:layout_constraintWidth_percent=".7" />
+
+    <TextView
+        android:id="@+id/tvSoup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Soup"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="14sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vDivider2" />
+
+    <taylor.com.selector.OrderSelector
+        android:id="@+id/selector_soup_mushroom"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:img="@drawable/mushroom"
+        app:indicator="@drawable/love"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@id/selector_main_pasta"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSoup"
+        app:layout_constraintWidth_percent=".15"
+        app:tag="@string/tag_soup_mushroom"
+        app:text="mushroom"
+        app:text_color="#FF222222"
+        app:text_size="12" />
+
+    <taylor.com.selector.OrderSelector
+        android:id="@+id/selector_soup_scampi"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:img="@drawable/scampi"
+        app:indicator="@drawable/love"
+        app:layout_constraintBottom_toBottomOf="@id/selector_soup_mushroom"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toEndOf="@id/selector_soup_mushroom"
+        app:layout_constraintTop_toTopOf="@id/selector_soup_mushroom"
+        app:layout_constraintWidth_percent=".15"
+        app:tag="@string/tag_soup_scampi"
+        app:text="scampi"
+        app:text_color="#FF222222"
+        app:text_size="12" />
 </android.support.constraint.ConstraintLayout>

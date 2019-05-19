@@ -1,5 +1,6 @@
 package taylor.com.selector;
 
+import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -9,31 +10,36 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import taylor.com.selector2.Selector;
 
-public class AgeSelector extends Selector {
+/**
+ * a Selector which shows an heart image on the right top when it is selected
+ */
+public class OrderSelector extends Selector {
     private TextView tvTitle;
     private ImageView ivIcon;
     private ImageView ivSelector;
-    private ValueAnimator valueAnimator;
+    private ValueAnimator alphaAnimator;
+    private ValueAnimator scaleAnimator;
     private String text;
     private int iconResId;
     private int indicatorResId;
     private int textColor;
     private int textSize;
 
-    public AgeSelector(Context context) {
+    public OrderSelector(Context context) {
         super(context);
     }
 
-    public AgeSelector(Context context, AttributeSet attrs) {
+    public OrderSelector(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public AgeSelector(Context context, AttributeSet attrs, int defStyleAttr) {
+    public OrderSelector(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -63,7 +69,7 @@ public class AgeSelector extends Selector {
 
     @Override
     protected View onCreateView() {
-        View view = LayoutInflater.from(this.getContext()).inflate(R.layout.age_selector, null);
+        View view = LayoutInflater.from(this.getContext()).inflate(R.layout.order_selector, null);
         tvTitle = view.findViewById(R.id.tv_title);
         ivIcon = view.findViewById(R.id.iv_icon);
         ivSelector = view.findViewById(R.id.iv_selector);
@@ -84,8 +90,8 @@ public class AgeSelector extends Selector {
         if (ivSelector == null) {
             return;
         }
-        if (valueAnimator != null) {
-            valueAnimator.reverse();
+        if (alphaAnimator != null) {
+            alphaAnimator.reverse();
         }
     }
 
@@ -93,15 +99,28 @@ public class AgeSelector extends Selector {
         if (ivSelector == null) {
             return;
         }
-        valueAnimator = ValueAnimator.ofInt(0, 255);
-        valueAnimator.setDuration(400);
-        valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        AnimatorSet set = new AnimatorSet();
+        alphaAnimator = ValueAnimator.ofInt(0, 255);
+        alphaAnimator.setDuration(200);
+        alphaAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+        alphaAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 ivSelector.setAlpha((int) animation.getAnimatedValue());
             }
         });
-        valueAnimator.start();
+
+        scaleAnimator = ValueAnimator.ofFloat(1f, 1.3f, 1f);
+        scaleAnimator.setDuration(500);
+        scaleAnimator.setInterpolator(new AnticipateOvershootInterpolator());
+        scaleAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                ivSelector.setScaleX(((Float) animation.getAnimatedValue()));
+                ivSelector.setScaleY(((Float) animation.getAnimatedValue()));
+            }
+        });
+        set.playTogether(alphaAnimator, scaleAnimator);
+        set.start();
     }
 }
