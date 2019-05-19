@@ -1,6 +1,6 @@
 # Selector
 
-it combine different choice mode into one View. There are two default mode, one is single choice mode act like RadioButton + RadioGroup, the other is multiple choice mode act like CheckBox. The Choice mode could be extended dynamically.
+it combine different choice mode into one View. There are two default mode, one is single choice mode act like `RadioButton + RadioGroup`, the other is multiple choice mode act like `CheckBox`. The Choice mode could be extended dynamically.
 
 ### why this?
 1. the RadioButton + RadioGroup has limitation on it's items, the items have to be honrizontal or vertical. Use this to get rid of it. You could arrange RadioButton whatever you like in layout xml
