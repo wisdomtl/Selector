@@ -10,6 +10,5 @@ it combine different choice mode into one View. There are two default mode, one 
 
 ### how does it looks it
 let me show you the "order mode":
-![order-choice.gif](https://user-gold-cdn.xitu.io/2019/5/19/16ad08e61cd8205b?w=960&h=640&f=gif&s=2127202)
+[order-choice.gif](https://user-gold-cdn.xitu.io/2019/5/19/16ad08e61cd8205b?w=960&h=640&f=gif&s=2127202)
 
-<iframe height=500 width=500 src="https://user-gold-cdn.xitu.io/2019/5/19/16ad08e61cd8205b?w=960&h=640&f=gif&s=2127202">
