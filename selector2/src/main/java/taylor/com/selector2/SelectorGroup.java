@@ -16,7 +16,7 @@ public class SelectorGroup {
 
     private Set<Selector> selectors = new HashSet<>();
     private ChoiceAction choiceMode;
-    private onStateChangeListener onStateChangeListener;
+    private OnStateChangeListener onStateChangeListener;
 
     public SelectorGroup(int mode) {
         switch (mode) {
@@ -37,6 +37,7 @@ public class SelectorGroup {
 
     /**
      * toggle or cancel one choice
+     *
      * @param selected
      * @param selector
      */
@@ -50,7 +51,7 @@ public class SelectorGroup {
         }
     }
 
-    public void setOnStateChangeListener(SelectorGroup.onStateChangeListener onStateChangeListener) {
+    public void setOnStateChangeListener(OnStateChangeListener onStateChangeListener) {
         this.onStateChangeListener = onStateChangeListener;
     }
 
@@ -117,11 +118,15 @@ public class SelectorGroup {
 
         @Override
         public void onChoose(Selector selector) {
-
+            boolean isSelected = selector.isSelected();
+            selector.setSelected(!isSelected);
+            if (onStateChangeListener != null) {
+                onStateChangeListener.onSelectorStateChange(selector.getSelectorTag(), !isSelected);
+            }
         }
     }
 
-    public interface onStateChangeListener {
+    public interface OnStateChangeListener {
         void onSelectorStateChange(String tag, boolean isSelected);
     }
 }
