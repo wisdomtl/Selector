@@ -65,7 +65,7 @@ public class SelectorGroup {
      */
     private void cancelPreSelector(Selector selector) {
         String groupTag = selector.getGroupTag();
-        Selector preSelector = selectorMap.get(groupTag);
+        Selector preSelector = getPreSelector(groupTag);
         if (preSelector != null) {
             preSelector.setSelected(false);
         }
