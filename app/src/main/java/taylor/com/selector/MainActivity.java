@@ -6,7 +6,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import taylor.com.selector2.Selector;
 import taylor.com.selector2.SelectorGroup;
@@ -27,29 +26,29 @@ public class MainActivity extends AppCompatActivity {
         SelectorGroup multipleGroup = new SelectorGroup();
         multipleGroup.setChoiceMode(SelectorGroup.MODE_MULTIPLE_CHOICE);
         multipleGroup.setStateListener(new MultipleChoiceListener());
-        ((Selector) findViewById(R.id.selector_10)).setGroup(multipleGroup);
-        ((Selector) findViewById(R.id.selector_20)).setGroup(multipleGroup);
-        ((Selector) findViewById(R.id.selector_30)).setGroup(multipleGroup);
+        ((Selector) findViewById(R.id.selector_10)).setGroup("multiple", multipleGroup);
+        ((Selector) findViewById(R.id.selector_20)).setGroup("multiple", multipleGroup);
+        ((Selector) findViewById(R.id.selector_30)).setGroup("multiple", multipleGroup);
 
         //single-choice
         SelectorGroup singleGroup = new SelectorGroup();
         singleGroup.setChoiceMode(SelectorGroup.MODE_SINGLE_CHOICE);
         singleGroup.setStateListener(new SingleChoiceListener());
-        ((Selector) findViewById(R.id.single10)).setGroup(singleGroup);
-        ((Selector) findViewById(R.id.single20)).setGroup(singleGroup);
-        ((Selector) findViewById(R.id.single30)).setGroup(singleGroup);
+        ((Selector) findViewById(R.id.single10)).setGroup("single", singleGroup);
+        ((Selector) findViewById(R.id.single20)).setGroup("single", singleGroup);
+        ((Selector) findViewById(R.id.single30)).setGroup("single", singleGroup);
 
         //order-choice
         SelectorGroup orderGroup = new SelectorGroup();
         orderGroup.setStateListener(new OrderChoiceListener());
         orderGroup.setChoiceMode(new OderChoiceMode());
-        ((Selector) findViewById(R.id.selector_starters_duck)).setGroup(orderGroup);
-        ((Selector) findViewById(R.id.selector_starters_pork)).setGroup(orderGroup);
-        ((Selector) findViewById(R.id.selector_starters_springRoll)).setGroup(orderGroup);
-        ((Selector) findViewById(R.id.selector_main_pizza)).setGroup(orderGroup);
-        ((Selector) findViewById(R.id.selector_main_pasta)).setGroup(orderGroup);
-        ((Selector) findViewById(R.id.selector_soup_mushroom)).setGroup(orderGroup);
-        ((Selector) findViewById(R.id.selector_soup_scampi)).setGroup(orderGroup);
+        ((Selector) findViewById(R.id.selector_starters_duck)).setGroup("starters", orderGroup);
+        ((Selector) findViewById(R.id.selector_starters_pork)).setGroup("starters", orderGroup);
+        ((Selector) findViewById(R.id.selector_starters_springRoll)).setGroup("starters", orderGroup);
+        ((Selector) findViewById(R.id.selector_main_pizza)).setGroup("main", orderGroup);
+        ((Selector) findViewById(R.id.selector_main_pasta)).setGroup("main", orderGroup);
+        ((Selector) findViewById(R.id.selector_soup_mushroom)).setGroup("soup", orderGroup);
+        ((Selector) findViewById(R.id.selector_soup_scampi)).setGroup("soup", orderGroup);
     }
 
     /**
@@ -102,30 +101,19 @@ public class MainActivity extends AppCompatActivity {
     private class OderChoiceMode implements SelectorGroup.ChoiceAction {
 
         @Override
-        public void onChoose(Set<Selector> selectors, Selector selector, SelectorGroup.StateListener stateListener) {
-            String tagPrefix = getTagPrefix(selector.getSelectorTag());
-            cancelPreSelectorBySameTag(selectors, tagPrefix, stateListener);
+        public void onChoose(Selector selector, SelectorGroup selectorGroup, SelectorGroup.StateListener stateListener) {
+            cancelPreSelector(selector, selectorGroup);
             selector.setSelected(true);
             if (stateListener != null) {
                 stateListener.onStateChange(selector.getSelectorTag(), true);
             }
         }
 
-        private void cancelPreSelectorBySameTag(Set<Selector> selectors, String tagPrefix, SelectorGroup.StateListener stateListener) {
-            for (Selector selector : selectors) {
-                String prefix = getTagPrefix(selector.getSelectorTag());
-                if (prefix.equals(tagPrefix) && selector.isSelected()) {
-                    selector.setSelected(false);
-                    if (stateListener != null) {
-                        stateListener.onStateChange(selector.getSelectorTag(), false);
-                    }
-                }
+        private void cancelPreSelector(Selector selector, SelectorGroup selectorGroup) {
+            Selector preSelector = selectorGroup.getPreSelector(selector.getGroupTag());
+            if (preSelector!=null) {
+                preSelector.setSelected(false);
             }
-        }
-
-        private String getTagPrefix(String tag) {
-            int index = tag.indexOf("_");
-            return tag.substring(0, index);
         }
     }
 }

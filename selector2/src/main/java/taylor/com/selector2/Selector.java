@@ -18,6 +18,11 @@ public abstract class Selector extends FrameLayout implements View.OnClickListen
      */
     private String tag;
     /**
+     * the tag indicates which group this selector belongs to,
+     * set the same group tag for selectors which want single choice mode
+     */
+    private String groupTag;
+    /**
      * the group which this Selector belongs to
      */
     private SelectorGroup selectorGroup;
@@ -65,10 +70,14 @@ public abstract class Selector extends FrameLayout implements View.OnClickListen
      * @param selectorGroup
      * @return
      */
-    public Selector setGroup(SelectorGroup selectorGroup) {
+    public Selector setGroup(String groupTag, SelectorGroup selectorGroup) {
         this.selectorGroup = selectorGroup;
-        selectorGroup.addSelector(this);
+        this.groupTag = groupTag;
         return this;
+    }
+
+    public String getGroupTag(){
+        return groupTag;
     }
 
     /**
@@ -82,6 +91,10 @@ public abstract class Selector extends FrameLayout implements View.OnClickListen
         return tag;
     }
 
+    public void setSelectorTag(String tag) {
+        this.tag = tag;
+    }
+
     @Override
     public void setSelected(boolean selected) {
         boolean isPreSelected = isSelected();
@@ -93,6 +106,7 @@ public abstract class Selector extends FrameLayout implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
+        //deliver the click event to the SelectorGroup
         if (selectorGroup != null) {
             selectorGroup.onSelectorClick(this);
         }
@@ -104,17 +118,4 @@ public abstract class Selector extends FrameLayout implements View.OnClickListen
      * @param isSelect
      */
     protected abstract void onSwitchSelected(boolean isSelect);
-
-    @Override
-    public int hashCode() {
-        return this.tag.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof Selector) {
-            return ((Selector) obj).tag.equals(this.tag);
-        }
-        return false;
-    }
 }

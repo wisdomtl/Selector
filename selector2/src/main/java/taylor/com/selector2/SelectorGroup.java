@@ -1,9 +1,6 @@
 package taylor.com.selector2;
 
-import android.view.View;
-
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
 
 /**
  * it controls the states between several choices which is a {@link Selector},
@@ -15,12 +12,16 @@ public class SelectorGroup {
     public static final int MODE_SINGLE_CHOICE = 1;
     public static final int MODE_MULTIPLE_CHOICE = 2;
 
-    private Set<Selector> selectors = new HashSet<>();
     private ChoiceAction choiceMode;
     private StateListener onStateChangeListener;
+    /**
+     * a map to keep previous selected selector
+     */
+    private HashMap<String, Selector> selectorMap = new HashMap<>();
 
     /**
      * customized an choice mode by yourself
+     *
      * @param choiceMode
      */
     public void setChoiceMode(ChoiceAction choiceMode) {
@@ -29,6 +30,7 @@ public class SelectorGroup {
 
     /**
      * set a default choice mode
+     *
      * @param mode
      */
     public void setChoiceMode(int mode) {
@@ -46,24 +48,26 @@ public class SelectorGroup {
         this.onStateChangeListener = onStateChangeListener;
     }
 
-    void addSelector(Selector selector) {
-        selectors.add(selector);
+    /**
+     * get the selector which clicked last time by the specific group tag
+     *
+     * @param groupTag a tag which the previous selector belongs to
+     * @return
+     */
+    public Selector getPreSelector(String groupTag) {
+        return selectorMap.get(groupTag);
     }
 
     /**
      * cancel selected state of one Selector when another is selected
      *
-     * @param selector  the Selector which is selected right now
-     * @param selectors the all Selectors which belongs to a SelectorGroup
+     * @param selector the Selector which is selected right now
      */
-    private void cancelPreSelector(View selector, Set<Selector> selectors) {
-        for (Selector s : selectors) {
-            if (!s.equals(selector) && s.isSelected()) {
-                s.setSelected(false);
-//                if (onStateChangeListener != null) {
-//                    onStateChangeListener.onStateChange(s.getSelectorTag(), false);
-//                }
-            }
+    private void cancelPreSelector(Selector selector) {
+        String groupTag = selector.getGroupTag();
+        Selector preSelector = selectorMap.get(groupTag);
+        if (preSelector != null) {
+            preSelector.setSelected(false);
         }
     }
 
@@ -74,18 +78,27 @@ public class SelectorGroup {
      */
     void onSelectorClick(Selector selector) {
         if (choiceMode != null) {
-            choiceMode.onChoose(selectors, selector, onStateChangeListener);
+            choiceMode.onChoose(selector, this, onStateChangeListener);
         }
+        //keep click selector in map
+        selectorMap.put(selector.getGroupTag(), selector);
     }
 
     public void clear() {
-        if (selectors != null) {
-            selectors.clear();
+        if (selectorMap != null) {
+            selectorMap.clear();
         }
     }
 
     public interface ChoiceAction {
-        void onChoose(Set<Selector> selectors, Selector selector, StateListener stateListener);
+        /**
+         * invoked when one selector is clicked
+         *
+         * @param selector      the clicked selector
+         * @param selectorGroup
+         * @param stateListener
+         */
+        void onChoose(Selector selector, SelectorGroup selectorGroup, StateListener stateListener);
     }
 
     /**
@@ -94,9 +107,9 @@ public class SelectorGroup {
     private class SingleAction implements ChoiceAction {
 
         @Override
-        public void onChoose(Set<Selector> selectors, Selector selector, StateListener stateListener) {
+        public void onChoose(Selector selector, SelectorGroup selectorGroup, StateListener stateListener) {
             selector.setSelected(true);
-            cancelPreSelector(selector, selectors);
+            cancelPreSelector(selector);
             if (stateListener != null) {
                 stateListener.onStateChange(selector.getSelectorTag(), true);
             }
@@ -109,7 +122,7 @@ public class SelectorGroup {
     private class MultipleAction implements ChoiceAction {
 
         @Override
-        public void onChoose(Set<Selector> selectors, Selector selector, StateListener stateListener) {
+        public void onChoose(Selector selector, SelectorGroup selectorGroup, StateListener stateListener) {
             boolean isSelected = selector.isSelected();
             selector.setSelected(!isSelected);
             if (stateListener != null) {
