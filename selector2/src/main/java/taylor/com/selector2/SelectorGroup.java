@@ -59,6 +59,26 @@ public class SelectorGroup {
     }
 
     /**
+     * toggle or cancel one choice
+     *
+     * @param selected
+     * @param selector
+     */
+    public void setSelected(boolean selected, Selector selector) {
+        if (selector == null) {
+            return;
+        }
+        if (selected) {
+            //keep click selector in map
+            selectorMap.put(selector.getGroupTag(), selector);
+        }
+        selector.setSelected(selected);
+        if (onStateChangeListener != null) {
+            onStateChangeListener.onStateChange(selector.getSelectorTag(), selected);
+        }
+    }
+
+    /**
      * cancel selected state of one Selector when another is selected
      *
      * @param selector the Selector which is selected right now
@@ -108,8 +128,8 @@ public class SelectorGroup {
 
         @Override
         public void onChoose(Selector selector, SelectorGroup selectorGroup, StateListener stateListener) {
-            selector.setSelected(true);
             cancelPreSelector(selector);
+            setSelected(true, selector);
             if (stateListener != null) {
                 stateListener.onStateChange(selector.getSelectorTag(), true);
             }
@@ -124,7 +144,7 @@ public class SelectorGroup {
         @Override
         public void onChoose(Selector selector, SelectorGroup selectorGroup, StateListener stateListener) {
             boolean isSelected = selector.isSelected();
-            selector.setSelected(!isSelected);
+            setSelected(!isSelected, selector);
             if (stateListener != null) {
                 stateListener.onStateChange(selector.getSelectorTag(), !isSelected);
             }

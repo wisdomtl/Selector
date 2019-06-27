@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         ((Selector) findViewById(R.id.selector_main_pasta)).setGroup("main", orderGroup);
         ((Selector) findViewById(R.id.selector_soup_mushroom)).setGroup("soup", orderGroup);
         ((Selector) findViewById(R.id.selector_soup_scampi)).setGroup("soup", orderGroup);
+        orderGroup.setSelected(true,(Selector) findViewById(R.id.selector_starters_duck));
     }
 
     /**
