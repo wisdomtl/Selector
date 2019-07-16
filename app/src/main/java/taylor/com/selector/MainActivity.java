@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import taylor.com.selector2.Selector;
@@ -12,7 +13,7 @@ import taylor.com.selector2.SelectorGroup;
 
 public class MainActivity extends AppCompatActivity {
     private List<String> tags = new ArrayList<>();
-    private List<String> orders = new ArrayList<>();
+    private HashMap<String, String> orders = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         ((Selector) findViewById(R.id.selector_main_pasta)).setGroup("main", orderGroup);
         ((Selector) findViewById(R.id.selector_soup_mushroom)).setGroup("soup", orderGroup);
         ((Selector) findViewById(R.id.selector_soup_scampi)).setGroup("soup", orderGroup);
-        orderGroup.setSelected(true,(Selector) findViewById(R.id.selector_starters_duck));
+        orderGroup.setSelected(true, (Selector) findViewById(R.id.selector_starters_duck));
     }
 
     /**
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private class SingleChoiceListener implements SelectorGroup.StateListener {
 
         @Override
-        public void onStateChange(String tag, boolean isSelected) {
+        public void onStateChange(String groupTag, String tag, boolean isSelected) {
             Toast.makeText(MainActivity.this, tag + " is selected", Toast.LENGTH_SHORT).show();
         }
     }
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
     private class MultipleChoiceListener implements SelectorGroup.StateListener {
 
         @Override
-        public void onStateChange(String tag, boolean isSelected) {
+        public void onStateChange(String groupTag, String tag, boolean isSelected) {
             if (isSelected) {
                 tags.add(tag);
             } else {
@@ -85,12 +86,10 @@ public class MainActivity extends AppCompatActivity {
     private class OrderChoiceListener implements SelectorGroup.StateListener {
 
         @Override
-        public void onStateChange(String tag, boolean isSelected) {
+        public void onStateChange(String groupTag, String tag, boolean isSelected) {
             if (isSelected) {
-                orders.add(tag);
+                orders.put(groupTag,tag);
                 Toast.makeText(MainActivity.this, orders.toString() + " is selected", Toast.LENGTH_SHORT).show();
-            } else {
-                orders.remove(tag);
             }
         }
     }
@@ -106,13 +105,13 @@ public class MainActivity extends AppCompatActivity {
             cancelPreSelector(selector, selectorGroup);
             selector.setSelected(true);
             if (stateListener != null) {
-                stateListener.onStateChange(selector.getSelectorTag(), true);
+                stateListener.onStateChange(selector.getGroupTag(), selector.getSelectorTag(), true);
             }
         }
 
         private void cancelPreSelector(Selector selector, SelectorGroup selectorGroup) {
             Selector preSelector = selectorGroup.getPreSelector(selector.getGroupTag());
-            if (preSelector!=null) {
+            if (preSelector != null) {
                 preSelector.setSelected(false);
             }
         }

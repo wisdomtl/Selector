@@ -74,7 +74,7 @@ public class SelectorGroup {
         }
         selector.setSelected(selected);
         if (onStateChangeListener != null) {
-            onStateChangeListener.onStateChange(selector.getSelectorTag(), selected);
+            onStateChangeListener.onStateChange(selector.getGroupTag(), selector.getSelectorTag(), selected);
         }
     }
 
@@ -130,9 +130,6 @@ public class SelectorGroup {
         public void onChoose(Selector selector, SelectorGroup selectorGroup, StateListener stateListener) {
             cancelPreSelector(selector);
             setSelected(true, selector);
-            if (stateListener != null) {
-                stateListener.onStateChange(selector.getSelectorTag(), true);
-            }
         }
     }
 
@@ -145,13 +142,10 @@ public class SelectorGroup {
         public void onChoose(Selector selector, SelectorGroup selectorGroup, StateListener stateListener) {
             boolean isSelected = selector.isSelected();
             setSelected(!isSelected, selector);
-            if (stateListener != null) {
-                stateListener.onStateChange(selector.getSelectorTag(), !isSelected);
-            }
         }
     }
 
     public interface StateListener {
-        void onStateChange(String tag, boolean isSelected);
+        void onStateChange(String groupTag, String tag, boolean isSelected);
     }
 }
