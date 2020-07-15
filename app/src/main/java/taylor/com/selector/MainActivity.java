@@ -1,7 +1,9 @@
 package taylor.com.selector;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -51,6 +53,14 @@ public class MainActivity extends AppCompatActivity {
         ((Selector) findViewById(R.id.selector_soup_mushroom)).setGroup("soup", orderGroup);
         ((Selector) findViewById(R.id.selector_soup_scampi)).setGroup("soup", orderGroup);
         orderGroup.setSelected(true, (Selector) findViewById(R.id.selector_starters_duck));
+
+        findViewById(R.id.btnKotlinStyle).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SelectorKtActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     /**
@@ -88,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onStateChange(String groupTag, String tag, boolean isSelected) {
             if (isSelected) {
-                orders.put(groupTag,tag);
+                orders.put(groupTag, tag);
                 Toast.makeText(MainActivity.this, orders.toString() + " is selected", Toast.LENGTH_SHORT).show();
             }
         }

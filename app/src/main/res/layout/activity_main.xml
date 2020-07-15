@@ -333,4 +333,12 @@
         app:text="scampi"
         app:text_color="#FF222222"
         app:text_size="12" />
+
+    <Button
+        android:id="@+id/btnKotlinStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="do it in Kotlin style"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </android.support.constraint.ConstraintLayout>
