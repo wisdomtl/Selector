@@ -1,5 +1,6 @@
 package taylor.com.layout
 
+
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
@@ -7,14 +8,17 @@ import android.graphics.Typeface
 import android.support.constraint.ConstraintHelper
 import android.support.constraint.ConstraintLayout
 import android.support.constraint.Guideline
-import android.support.v4.app.Fragment
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v4.view.MarginLayoutParamsCompat
-import android.support.v4.widget.NestedScrollView
+
 import android.text.Editable
 import android.util.TypedValue
 import android.view.*
 import android.widget.*
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.MarginLayoutParamsCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import taylor.com.slectorkt.Selector
 
 
@@ -36,9 +40,6 @@ inline fun ViewGroup.RelativeLayout(init: RelativeLayout.() -> Unit) =
 
 inline fun ViewGroup.LinearLayout(init: LinearLayout.() -> Unit) =
     LinearLayout(context).apply(init).also { addView(it) }
-
-inline fun ViewGroup.NestedScrollView(init: NestedScrollView.() -> Unit) =
-    NestedScrollView(context).apply(init).also { addView(it) }
 
 inline fun ViewGroup.ConstraintLayout(init: ConstraintLayout.() -> Unit) =
     ConstraintLayout(context).apply(init).also { addView(it) }
@@ -67,8 +68,6 @@ inline fun Context.LinearLayout(init: LinearLayout.() -> Unit): LinearLayout =
 inline fun Context.FrameLayout(init: FrameLayout.() -> Unit) =
     FrameLayout(this).apply(init)
 
-inline fun Context.NestedScrollView(init: NestedScrollView.() -> Unit) =
-    NestedScrollView(this).apply(init)
 
 inline fun Context.TextView(init: TextView.() -> Unit) =
     TextView(this).apply(init)
@@ -100,8 +99,6 @@ inline fun Fragment.LinearLayout(init: LinearLayout.() -> Unit) =
 inline fun Fragment.FrameLayout(init: FrameLayout.() -> Unit) =
     context?.let { FrameLayout(it).apply(init) }
 
-inline fun Fragment.NestedScrollView(init: NestedScrollView.() -> Unit) =
-    context?.let { NestedScrollView(it).apply(init) }
 
 inline fun Fragment.TextView(init: TextView.() -> Unit) =
     context?.let { TextView(it).apply(init) }
@@ -508,6 +505,23 @@ inline var View.layout_visibility: Int
         visibility = value
     }
 
+inline var View.bindLiveData: LiveDataBinder?
+    get() {
+        return null
+    }
+    set(value) {
+        observe(value?.liveData) {
+            value?.action?.invoke(it)
+        }
+    }
+
+inline var View.bind: Binder?
+    get() {
+        return null
+    }
+    set(value) {
+        value?.action?.invoke(this, value.data )
+    }
 
 inline var ImageView.src: Int
     get() {
@@ -581,15 +595,6 @@ inline var Button.textAllCaps: Boolean
         isAllCaps = value
     }
 
-
-inline var NestedScrollView.fadeScrollBar: Boolean
-    get() {
-        return false
-    }
-    set(value) {
-        isScrollbarFadingEnabled = true
-    }
-
 inline var ConstraintHelper.referenceIds: String
     get() {
         return ""
@@ -644,7 +649,6 @@ val scale_matrix = ImageView.ScaleType.MATRIX
 val scale_fit_start = ImageView.ScaleType.FIT_START
 
 
-
 val spread = ConstraintLayout.LayoutParams.CHAIN_SPREAD
 val packed = ConstraintLayout.LayoutParams.CHAIN_PACKED
 val spread_inside = ConstraintLayout.LayoutParams.CHAIN_SPREAD_INSIDE
@@ -683,6 +687,11 @@ fun String.toLayoutId(): Int {
 
 fun <T : View> View.find(id: String): T? = findViewById(id.toLayoutId())
 
+fun <T> View.observe(liveData: LiveData<T>?, action: (T) -> Unit) {
+    (context as? LifecycleOwner)?.let { owner ->
+        liveData?.observe(owner, Observer { action(it) })
+    }
+}
 
 //</editor-fold>
 
@@ -705,5 +714,16 @@ class TextWatcher(
 )
 
 fun textWatcher(init: TextWatcher.() -> Unit): TextWatcher = TextWatcher().apply(init)
+
+/**
+ * helper class for data binding
+ */
+class LiveDataBinder(var liveData: LiveData<*>? = null, var action: ((Any?) -> Unit)? = null)
+
+fun liveDataBinder(liveData: LiveData<*>?, init: LiveDataBinder.() -> Unit): LiveDataBinder =
+    LiveDataBinder(liveData).apply(init)
+
+class Binder(var data: Any?, var action: ((View, Any?) -> Unit)? = null)
+
 
 //</editor-fold>

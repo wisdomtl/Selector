@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import java.io.Closeable
-import kotlin.coroutines.CoroutineContext
 
 /**
  * a ViewGroup that has customized action when selected or unselected, it could be an substitution for [android.widget.CheckBox] and [android.widget.RadioButton]
@@ -15,7 +14,7 @@ import kotlin.coroutines.CoroutineContext
  * [tags] keeps data bean for this [Selector],
  * [group] describe selection mode for [Selector], and the mode could be extended easily.
  */
-open class Selector @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
+class Selector @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
     FrameLayout(context, attrs, defStyleAttr) {
 
     /**
@@ -67,7 +66,7 @@ open class Selector @JvmOverloads constructor(context: Context, attrs: Attribute
         }
     }
 
-    operator fun <T:Closeable> set(key: Key<T>, closeable: Closeable) {
+    operator fun <T : Closeable> set(key: Key<T>, closeable: Closeable) {
         tags[key] = closeable
     }
 

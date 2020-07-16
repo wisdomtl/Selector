@@ -2,11 +2,12 @@ package taylor.com.selector
 
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import taylor.com.layout.*
 import taylor.com.slectorkt.Selector
 import taylor.com.slectorkt.SelectorGroup
@@ -21,7 +22,7 @@ class SelectorKtActivity : AppCompatActivity() {
     )
 
     private lateinit var multipleModeContainer: LinearLayout
-    private val key = object :Selector.Key<Man>{}
+    private val key = object : Selector.Key<Man> {}
 
     /**
      * describe how age Selector looks like
@@ -79,6 +80,11 @@ class SelectorKtActivity : AppCompatActivity() {
         }
     }
 
+    private val selectorBindAction = { selector: View, data: Any? ->
+        selector.find<ImageView>("ivContent")?.setImageResource((data as Man).res)
+        selector.find<TextView>("tvTitle")?.text = (data as Man).title
+    }
+
     /**
      * the multiple choice mode controller for age selector
      */
@@ -117,9 +123,7 @@ class SelectorKtActivity : AppCompatActivity() {
                 onStateChange = onAgeSelectStateChange
                 top_toBottomOf = "tvSingleMode"
                 center_horizontal = true
-            }.apply {
-                find<ImageView>("ivContent")?.setImageResource(R.drawable.man)
-                find<TextView>("tvTitle")?.text = "man"
+                bind = Binder(Man(20, "man", R.drawable.man), selectorBindAction)
             }
             Selector {
                 layout_id = "sOldMan"
@@ -134,13 +138,11 @@ class SelectorKtActivity : AppCompatActivity() {
                 start_toStartOf = parent_id
                 end_toEndOf = parent_id
                 horizontal_bias = 0.2f
-            }.apply {
-                find<ImageView>("ivContent")?.setImageResource(R.drawable.old_man)
-                find<TextView>("tvTitle")?.text = "old man"
+                bind = Binder(Man(40, "old-man", R.drawable.old_man), selectorBindAction)
             }
             Selector {
                 layout_id = "sTeenager"
-                tag = "teenage"
+                tag = "teenager"
                 group = singleGroup
                 groupTag = "age"
                 layout_width = 90
@@ -151,9 +153,7 @@ class SelectorKtActivity : AppCompatActivity() {
                 start_toStartOf = parent_id
                 end_toEndOf = parent_id
                 horizontal_bias = 0.8f
-            }.apply {
-                find<ImageView>("ivContent")?.setImageResource(R.drawable.teenage)
-                find<TextView>("tvTitle")?.text = "teenage"
+                bind = Binder(Man(13, "teenager", R.drawable.teenage), selectorBindAction)
             }
 
             TextView {
@@ -171,7 +171,7 @@ class SelectorKtActivity : AppCompatActivity() {
                 layout_width = wrap_content
                 layout_height = wrap_content
                 orientation = horizontal
-                gravity = gravity_center_horizontal
+                center_horizontal = true
                 top_toBottomOf = "tvMultiMode"
             }
         }
@@ -198,9 +198,10 @@ class SelectorKtActivity : AppCompatActivity() {
                 contentView = ageSelectorView
                 onStateChange = onAgeSelectStateChange
                 tags[key] = man
-            }.apply {
-                find<ImageView>("ivContent")?.setImageResource(man.res)
-                find<TextView>("tvTitle")?.text = man.title
+                bind = Binder(man){selector,data->
+                    find<ImageView>("ivContent")?.setImageResource((data as Man).res)
+                    find<TextView>("tvTitle")?.text = (data as Man).title
+                }
             }.also { multipleModeContainer.addView(it) }
         }
     }
