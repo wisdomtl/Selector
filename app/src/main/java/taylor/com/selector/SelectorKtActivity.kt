@@ -15,12 +15,13 @@ import java.io.Closeable
 class SelectorKtActivity : AppCompatActivity() {
 
     private val mans = listOf(
-        Man(13, "teenager",R.drawable.teenage),
-        Man(20, "man",R.drawable.man),
-        Man(40, "old-man",R.drawable.old_man)
+        Man(13, "teenager", R.drawable.teenage),
+        Man(20, "man", R.drawable.man),
+        Man(40, "old-man", R.drawable.old_man)
     )
 
     private lateinit var multipleModeContainer: LinearLayout
+    private val key = object :Selector.Key<Man>{}
 
     /**
      * describe how age Selector looks like
@@ -68,7 +69,7 @@ class SelectorKtActivity : AppCompatActivity() {
     }
 
     /**
-     * the controller for age selector
+     * the single choice mode controller for age selector
      */
     private val singleGroup = SelectorGroup().apply {
         choiceMode = SelectorGroup.MODE_SINGLE
@@ -78,10 +79,16 @@ class SelectorKtActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * the multiple choice mode controller for age selector
+     */
     private val multipleGroup = SelectorGroup().apply {
         choiceMode = SelectorGroup.MODE_MULTIPLE
         selectChangeListener = { selectors: List<Selector>, select: Boolean ->
-            Log.v("ttaylor", "tag=selectkt, SelectorKtActivity.()  ${selectors.print { (it["age"] as Man).let { it.title +","+ it.age } }} is $select")
+            Log.v(
+                "ttaylor",
+                "tag=selectkt, SelectorKtActivity.()  ${selectors.print { it[key].let { it?.title + "," + it?.age } }} is $select"
+            )
         }
     }
     private val rootView by lazy {
@@ -190,7 +197,7 @@ class SelectorKtActivity : AppCompatActivity() {
                 layout_height = 50
                 contentView = ageSelectorView
                 onStateChange = onAgeSelectStateChange
-                tags["age"] = man
+                tags[key] = man
             }.apply {
                 find<ImageView>("ivContent")?.setImageResource(man.res)
                 find<TextView>("tvTitle")?.text = man.title
@@ -199,6 +206,9 @@ class SelectorKtActivity : AppCompatActivity() {
     }
 }
 
+/**
+ * data bean for multiple choice [Selector]
+ */
 data class Man(var age: Int, var title: String, var res: Int) : Closeable {
     override fun close() {
         age = -1

@@ -6,14 +6,22 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import java.io.Closeable
+import kotlin.coroutines.CoroutineContext
 
+/**
+ * a ViewGroup that has customized action when selected or unselected, it could be an substitution for [android.widget.CheckBox] and [android.widget.RadioButton]
+ * [contentView] describe how do [Selector] looks like,
+ * [onStateChange] describe what effect will be shown after selection state change,
+ * [tags] keeps data bean for this [Selector],
+ * [group] describe selection mode for [Selector], and the mode could be extended easily.
+ */
 open class Selector @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
     FrameLayout(context, attrs, defStyleAttr) {
 
     /**
      * the values this [Selector] carry
      */
-    var tags = HashMap<String, Closeable?>()
+    var tags = HashMap<Any?, Closeable?>()
 
     /**
      * the unique identifier for a [Selector]
@@ -59,11 +67,11 @@ open class Selector @JvmOverloads constructor(context: Context, attrs: Attribute
         }
     }
 
-    operator fun set(key: String, closeable: Closeable) {
+    operator fun <T:Closeable> set(key: Key<T>, closeable: Closeable) {
         tags[key] = closeable
     }
 
-    operator fun get(key: String) = tags.getOrElse(key, { null })
+    operator fun <T : Closeable> get(key: Key<T>): T? = (tags.getOrElse(key, { null })) as T
 
     override fun setSelected(selected: Boolean) {
         val isPreSelected = isSelected
@@ -94,5 +102,10 @@ open class Selector @JvmOverloads constructor(context: Context, attrs: Attribute
         } catch (e: Exception) {
         }
     }
+
+    /**
+     * the key for data bean of this [Selector]
+     */
+    interface Key<E : Closeable>
 }
 
