@@ -88,6 +88,9 @@ inline fun Context.EditText(init: EditText.() -> Unit) =
 inline fun Context.ViewFlipper(init: ViewFlipper.() -> Unit) =
     ViewFlipper(this).apply(init)
 
+inline fun Context.Selector(init: Selector.() -> Unit) =
+    Selector(this).apply(init)
+
 inline fun Fragment.ConstraintLayout(init: ConstraintLayout.() -> Unit) =
     context?.let { ConstraintLayout(it).apply(init) }
 
