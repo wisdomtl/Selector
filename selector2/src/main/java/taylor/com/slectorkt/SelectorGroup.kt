@@ -1,5 +1,6 @@
 package taylor.com.slectorkt
 
+import android.view.ViewGroup
 import taylor.com.selector_kt.Selector
 
 
@@ -60,5 +61,9 @@ class SelectorGroup {
         } else {
             selectChangeListener?.invoke(listOf(selector), select)
         }
+    }
+
+    fun clear(){
+        selectors.clear()
     }
 }

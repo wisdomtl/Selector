@@ -60,5 +60,10 @@ open class Selector @JvmOverloads constructor(context: Context, attrs: Attribute
             onStateChange?.invoke(this, selected)
         }
     }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        group?.clear()
+    }
 }
 
