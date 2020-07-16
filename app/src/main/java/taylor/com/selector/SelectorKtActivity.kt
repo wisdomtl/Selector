@@ -7,7 +7,7 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import taylor.com.layout.*
-import taylor.com.selector_kt.Selector
+import taylor.com.slectorkt.Selector
 import taylor.com.slectorkt.SelectorGroup
 
 class SelectorKtActivity : AppCompatActivity() {

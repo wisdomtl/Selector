@@ -1,14 +1,20 @@
-package taylor.com.selector_kt
+package taylor.com.slectorkt
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
-import taylor.com.slectorkt.SelectorGroup
+import java.io.Closeable
 
 open class Selector @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
     FrameLayout(context, attrs, defStyleAttr) {
+
+    /**
+     * the values this [Selector] carry
+     */
+    var tags = HashMap<String, Closeable?>()
+
     /**
      * the unique identifier for a [Selector]
      */
@@ -53,6 +59,12 @@ open class Selector @JvmOverloads constructor(context: Context, attrs: Attribute
         }
     }
 
+    operator fun set(key: String, closeable: Closeable) {
+        tags[key] = closeable
+    }
+
+    operator fun get(key: String) = tags.getOrElse(key, { null })
+
     override fun setSelected(selected: Boolean) {
         val isPreSelected = isSelected
         super.setSelected(selected)
@@ -63,7 +75,24 @@ open class Selector @JvmOverloads constructor(context: Context, attrs: Attribute
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
+        clear()
+    }
+
+    /**
+     * clear the values attached to this [Selector]
+     */
+    private fun clear() {
         group?.clear()
+        tags.forEach { entry ->
+            closeWithException(entry.value)
+        }
+    }
+
+    private fun closeWithException(closable: Closeable?) {
+        try {
+            closable?.close()
+        } catch (e: Exception) {
+        }
     }
 }
 

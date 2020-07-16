@@ -1,14 +1,10 @@
 package taylor.com.slectorkt
 
-import android.view.ViewGroup
-import taylor.com.selector_kt.Selector
-
 
 /**
  * the controller for [Selector]s
  */
 class SelectorGroup {
-
     companion object {
         /**
          * single choice mode, previous [Selector] will be unselected if a new one is selected

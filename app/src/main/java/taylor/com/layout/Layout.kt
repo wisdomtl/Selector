@@ -1,11 +1,7 @@
 package taylor.com.layout
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.res.Resources
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Typeface
 import android.support.constraint.ConstraintHelper
@@ -19,7 +15,7 @@ import android.text.Editable
 import android.util.TypedValue
 import android.view.*
 import android.widget.*
-import taylor.com.selector_kt.Selector
+import taylor.com.slectorkt.Selector
 
 
 //<editor-fold desc="widget creation function">
