@@ -30,7 +30,7 @@ class SelectorGroup {
     private var selectors = mutableListOf<Selector>()
 
     /**
-     * the choice mode of this [SelectorGroup], there are two default choice mode, which is [singleMode] and [multipleMode]
+     * the choice mode of this [SelectorGroup], there are two default choice mode, which is [MODE_SINGLE] and [MODE_MULTIPLE]
      */
     var choiceMode: ((SelectorGroup, Selector) -> Unit)? = null
 
