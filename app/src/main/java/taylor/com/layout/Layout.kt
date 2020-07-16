@@ -26,7 +26,6 @@ import taylor.com.selector_kt.Selector
 inline fun ViewGroup.TextView(init: TextView.() -> Unit) =
     TextView(context).apply(init).also { addView(it) }
 
-
 inline fun ViewGroup.ImageView(init: ImageView.() -> Unit) =
     ImageView(context).apply(init).also { addView(it) }
 
@@ -92,7 +91,6 @@ inline fun Context.EditText(init: EditText.() -> Unit) =
 
 inline fun Context.ViewFlipper(init: ViewFlipper.() -> Unit) =
     ViewFlipper(this).apply(init)
-
 
 inline fun Fragment.ConstraintLayout(init: ConstraintLayout.() -> Unit) =
     context?.let { ConstraintLayout(it).apply(init) }

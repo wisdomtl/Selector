@@ -8,10 +8,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import taylor.com.layout.*
 import taylor.com.selector_kt.Selector
-import taylor.com.selector_kt.SelectorGroup
+import taylor.com.slectorkt.SelectorGroup
 
 class SelectorKtActivity : AppCompatActivity() {
 
+    /**
+     * describe how age Selector looks like
+     */
     private val ageSelectorView: ConstraintLayout
         get() = ConstraintLayout {
             layout_width = match_parent
@@ -48,11 +51,16 @@ class SelectorKtActivity : AppCompatActivity() {
             }
         }
 
-
+    /**
+     * the listener for age selectors
+     */
     private val onAgeSelectStateChange = { selector: Selector, select: Boolean ->
         selector.find<ImageView>("ivSelector")?.alpha = if (select) 1f else 0f
     }
 
+    /**
+     * the controller for age selector
+     */
     private val ageGroup = SelectorGroup().apply {
         choiceMode = SelectorGroup.MODE_SINGLE
         selectChangeListener = { selectors: List<Selector>, select: Boolean ->

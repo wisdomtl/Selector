@@ -1,6 +1,11 @@
-package taylor.com.selector_kt
+package taylor.com.slectorkt
+
+import taylor.com.selector_kt.Selector
 
 
+/**
+ * the controller for [Selector]s
+ */
 class SelectorGroup {
 
     companion object {
