@@ -97,6 +97,10 @@ class SelectorKtActivity : AppCompatActivity() {
             )
         }
     }
+
+    /**
+     * create Selector non-dynamically just like in xml
+     */
     private val rootView by lazy {
         ConstraintLayout {
             layout_width = match_parent

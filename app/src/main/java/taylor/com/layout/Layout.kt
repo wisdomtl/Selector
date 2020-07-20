@@ -118,6 +118,15 @@ inline fun Fragment.ViewFlipper(init: ViewFlipper.() -> Unit) =
 inline fun Fragment.EditText(init: EditText.() -> Unit) =
     context?.let { EditText(it).apply(init) }
 
+inline fun ViewGroup.LineFeedLayout(init: LineFeedLayout.() -> Unit) =
+    LineFeedLayout(context).apply(init).also { addView(it) }
+
+inline fun Context.LineFeedLayout(init: LineFeedLayout.() -> Unit): LineFeedLayout =
+    LineFeedLayout(this).apply(init)
+
+inline fun Fragment.LineFeedLayout(init: LineFeedLayout.() -> Unit) =
+    context?.let { LineFeedLayout(it).apply(init) }
+
 //</editor-fold>
 
 //<editor-fold desc="View extend field">
