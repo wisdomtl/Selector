@@ -27,7 +27,7 @@ class SelectorGroup {
     /**
      * the selected [Selector]s in this [SelectorGroup]
      */
-    private var selectors = mutableListOf<Selector>()
+    private var selectors = mutableSetOf<Selector>()
 
     /**
      * the choice mode of this [SelectorGroup], there are two default choice mode, which is [MODE_SINGLE] and [MODE_MULTIPLE]
@@ -38,7 +38,7 @@ class SelectorGroup {
      * if selection in this [SelectorGroup] is changed ,this lambda will be invoked,
      * override this to listen the change of selection
      */
-    var selectChangeListener: ((List<Selector>, Boolean) -> Unit)? = null
+    var selectChangeListener: ((Set<Selector>, Boolean) -> Unit)? = null
 
     fun onSelectorClick(selector: Selector) {
         choiceMode?.invoke(this, selector)
@@ -55,7 +55,7 @@ class SelectorGroup {
         if (select) {
             selectChangeListener?.invoke(selectors, select)
         } else {
-            selectChangeListener?.invoke(listOf(selector), select)
+            selectChangeListener?.invoke(setOf(selector), select)
         }
     }
 

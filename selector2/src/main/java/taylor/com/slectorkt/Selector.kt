@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import java.io.Closeable
+import java.util.*
+import kotlin.collections.HashMap
 
 /**
  * a ViewGroup that has customized action when selected or unselected, it could be an substitution for [android.widget.CheckBox] and [android.widget.RadioButton]
@@ -25,7 +27,7 @@ class Selector @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     /**
      * the unique identifier for a [Selector]
      */
-    var tag: String = "default tag"
+    var tag: String = "default tag-${UUID.randomUUID()}"
 
     /**
      * the identifier for the [SelectorGroup] this [Selector] belongs to
@@ -112,6 +114,10 @@ class Selector @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             closable?.close()
         } catch (e: Exception) {
         }
+    }
+
+    override fun hashCode(): Int {
+        return tag.hashCode()
     }
 
     /**
