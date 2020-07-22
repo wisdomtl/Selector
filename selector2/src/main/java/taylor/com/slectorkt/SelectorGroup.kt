@@ -20,7 +20,7 @@ class SelectorGroup {
          * multiple choice mode, several [Selector] could be selected in one [SelectorGroup]
          */
         var MODE_MULTIPLE = { selectorGroup: SelectorGroup, selector: Selector ->
-            selectorGroup.setSelected(selector, !selector.isSelected)
+            selectorGroup.setSelected(selector, !selector.isSelecting)
         }
     }
 
@@ -51,7 +51,7 @@ class SelectorGroup {
 
     fun setSelected(selector: Selector, select: Boolean) {
         if (select) selectors.add(selector) else selectors.remove(selector)
-        selector.isSelected = select
+        selector.showSelectEffect(select)
         if (select) {
             selectChangeListener?.invoke(selectors, select)
         } else {

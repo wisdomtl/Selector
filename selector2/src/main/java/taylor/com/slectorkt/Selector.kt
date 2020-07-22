@@ -10,7 +10,7 @@ import java.io.Closeable
 /**
  * a ViewGroup that has customized action when selected or unselected, it could be an substitution for [android.widget.CheckBox] and [android.widget.RadioButton]
  * [contentView] describe how do [Selector] looks like,
- * [onStateChange] describe what effect will be shown after selection state change,
+ * [onSelectChange] describe what effect will be shown after selection state change,
  * [tags] keeps data bean for this [Selector],
  * [group] describe selection mode for [Selector], and the mode could be extended easily.
  */
@@ -55,7 +55,12 @@ class Selector @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
      * it will be invoked when the selection state of this [Selector] has changed,
      * override it if you want customized effect of selected or unselected
      */
-    var onStateChange: ((Selector, Boolean) -> Unit)? = null
+    var onSelectChange: ((Selector, Boolean) -> Unit)? = null
+
+    /**
+     * whether this [Selector] is selected
+     */
+    var isSelecting: Boolean = false
 
     init {
         contentView?.let {
@@ -72,12 +77,19 @@ class Selector @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
 
     operator fun <T : Closeable> get(key: Key<T>): T? = (tags.getOrElse(key, { null })) as T
 
-    override fun setSelected(selected: Boolean) {
-        val isPreSelected = isSelected
-        super.setSelected(selected)
-        if (isPreSelected != selected) {
-            onStateChange?.invoke(this, selected)
+    /**
+     * change the selection state of this [Selector]
+     */
+    fun setSelect(select: Boolean) {
+        group?.onSelectorClick(this)
+        showSelectEffect(select)
+    }
+
+    fun showSelectEffect(select: Boolean) {
+        if (isSelecting != select) {
+            onSelectChange?.invoke(this, select)
         }
+        isSelecting = select
     }
 
     override fun onDetachedFromWindow() {

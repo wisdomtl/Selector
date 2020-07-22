@@ -124,7 +124,7 @@ class SelectorKtActivity : AppCompatActivity() {
                 layout_width = 90
                 layout_height = 50
                 contentView = ageSelectorView
-                onStateChange = onAgeSelectStateChange
+                onSelectChange = onAgeSelectStateChange
                 top_toBottomOf = "tvSingleMode"
                 center_horizontal = true
                 bind = Binder(Man(20, "man", R.drawable.man), selectorBindAction)
@@ -137,7 +137,7 @@ class SelectorKtActivity : AppCompatActivity() {
                 layout_width = 90
                 layout_height = 50
                 contentView = ageSelectorView
-                onStateChange = onAgeSelectStateChange
+                onSelectChange = onAgeSelectStateChange
                 top_toBottomOf = "sMan"
                 start_toStartOf = parent_id
                 end_toEndOf = parent_id
@@ -152,7 +152,7 @@ class SelectorKtActivity : AppCompatActivity() {
                 layout_width = 90
                 layout_height = 50
                 contentView = ageSelectorView
-                onStateChange = onAgeSelectStateChange
+                onSelectChange = onAgeSelectStateChange
                 top_toBottomOf = "sMan"
                 start_toStartOf = parent_id
                 end_toEndOf = parent_id
@@ -200,7 +200,7 @@ class SelectorKtActivity : AppCompatActivity() {
                 layout_width = 90
                 layout_height = 50
                 contentView = ageSelectorView
-                onStateChange = onAgeSelectStateChange
+                onSelectChange = onAgeSelectStateChange
                 tags[key] = man
                 bind = Binder(man){selector,data->
                     find<ImageView>("ivContent")?.setImageResource((data as Man).res)

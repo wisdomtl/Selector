@@ -1,17 +1,14 @@
 package cn.neoclub.uki.home.game
 
-import android.content.Context
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import taylor.com.layout.*
 import taylor.com.selector.R
 import taylor.com.slectorkt.Selector
@@ -189,7 +186,7 @@ class GameDialogFragment : DialogFragment() {
                         groupTag = "gameTypes"
                         group = gameSelectorGroup
                         contentView = gameView
-                        onStateChange = onGameTypeSelectChange
+                        onSelectChange = onGameTypeSelectChange
                         layout_width = 60
                         layout_height = 81
                         margin_end = 20
