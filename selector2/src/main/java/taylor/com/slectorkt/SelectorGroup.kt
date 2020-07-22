@@ -50,7 +50,6 @@ class SelectorGroup {
     fun find(groupTag: String) = selectors.find { it.groupTag == groupTag }
 
     fun setSelected(selector: Selector, select: Boolean) {
-        if (selector.isSelecting == select) return
         if (select) selectors.add(selector) else selectors.remove(selector)
         selector.showSelectEffect(select)
         if (select) {
