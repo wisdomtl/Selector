@@ -38,7 +38,7 @@ class SelectorGroup {
      * if selection in this [SelectorGroup] is changed ,this lambda will be invoked,
      * override this to listen the change of selection
      */
-    var selectChangeListener: ((Set<Selector>/*selected set*/, Selector?/*unselected*/) -> Unit)? = null
+    var selectChangeListener: ((List<Selector>/*selected set*/, Selector?/*unselected*/) -> Unit)? = null
 
     fun onSelectorClick(selector: Selector) {
         choiceMode?.invoke(this, selector)
@@ -62,9 +62,9 @@ class SelectorGroup {
         }
         selector.showSelectEffect(select)
         if (select) {
-            selectChangeListener?.invoke(selectorMap[selector.groupTag] ?: emptySet(), null)
+            selectChangeListener?.invoke(selectorMap.flatMap { it.value }, null)
         } else {
-            selectChangeListener?.invoke(selectorMap[selector.groupTag] ?: emptySet(), selector)
+            selectChangeListener?.invoke(selectorMap.flatMap { it.value }, selector)
         }
     }
 
@@ -72,3 +72,4 @@ class SelectorGroup {
         selectorMap.clear()
     }
 }
+
