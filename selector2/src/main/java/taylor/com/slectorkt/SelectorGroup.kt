@@ -11,7 +11,7 @@ class SelectorGroup {
          */
         var MODE_SINGLE = { selectorGroup: SelectorGroup, selector: Selector ->
             selectorGroup.run {
-                find(selector.groupTag)?.let { setSelected(it, false) }
+                findLast(selector.groupTag)?.let { setSelected(it, false) }
                 setSelected(selector, true)
             }
         }
@@ -27,7 +27,7 @@ class SelectorGroup {
     /**
      * the selected [Selector]s in this [SelectorGroup]
      */
-    private var selectors = mutableSetOf<Selector>()
+    private var selectorMap = HashMap<String, MutableSet<Selector>>()
 
     /**
      * the choice mode of this [SelectorGroup], there are two default choice mode, which is [MODE_SINGLE] and [MODE_MULTIPLE]
@@ -45,21 +45,30 @@ class SelectorGroup {
     }
 
     /**
-     * find [Selector] according to tag
+     * find [Selector]s with the same [groupTag]
      */
-    fun find(groupTag: String) = selectors.find { it.groupTag == groupTag }
+    fun find(groupTag: String) = selectorMap[groupTag]
+
+    /**
+     * find [Selector] according to [groupTag] and [tag]
+     */
+    fun findLast(groupTag: String) = find(groupTag)?.takeUnless { it.isNullOrEmpty() }?.last()
 
     fun setSelected(selector: Selector, select: Boolean) {
-        if (select) selectors.add(selector) else selectors.remove(selector)
+        if (select) {
+            selectorMap[selector.groupTag]?.also { it.add(selector) } ?: also { selectorMap[selector.groupTag] = mutableSetOf(selector) }
+        } else {
+            selectorMap[selector.groupTag]?.also { it.remove(selector) }
+        }
         selector.showSelectEffect(select)
         if (select) {
-            selectChangeListener?.invoke(selectors, null)
+            selectChangeListener?.invoke(selectorMap[selector.groupTag] ?: emptySet(), null)
         } else {
-            selectChangeListener?.invoke(selectors, selector)
+            selectChangeListener?.invoke(selectorMap[selector.groupTag] ?: emptySet(), selector)
         }
     }
 
     fun clear() {
-        selectors.clear()
+        selectorMap.clear()
     }
 }

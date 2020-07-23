@@ -74,9 +74,9 @@ class SelectorKtActivity : AppCompatActivity() {
      */
     private val singleGroup = SelectorGroup().apply {
         choiceMode = SelectorGroup.MODE_SINGLE
-        selectChangeListener = { selectors: List<Selector>, select: Boolean ->
+        selectChangeListener = { selectors: Set<Selector>, unselector: Selector? ->
             val sel = selectors.fold("") { acc: String, selector: Selector -> "${acc} ,${selector.tag}" }
-            Log.v("ttaylor", "tag=selectkt, SelectorKtActivity.()  ${sel} is $select")
+            Log.v("ttaylor", "tag=selectkt, SelectorKtActivity.()  ${sel} is selected, ${unselector?.tag} is unselected")
         }
     }
 
@@ -90,11 +90,9 @@ class SelectorKtActivity : AppCompatActivity() {
      */
     private val multipleGroup = SelectorGroup().apply {
         choiceMode = SelectorGroup.MODE_MULTIPLE
-        selectChangeListener = { selectors: List<Selector>, select: Boolean ->
-            Log.v(
-                "ttaylor",
-                "tag=selectkt, SelectorKtActivity.()  ${selectors.print { it[key].let { it?.title + "," + it?.age } }} is $select"
-            )
+        selectChangeListener = { selectors: Set<Selector>, unselector: Selector? ->
+            val sel = selectors.fold("") { acc: String, selector: Selector -> "${acc} ,${selector.tag}" }
+            Log.v("ttaylor", "tag=selectkt, SelectorKtActivity.()  ${sel} is selected, ${unselector?.tag} is unselected")
         }
     }
 

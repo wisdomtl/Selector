@@ -132,7 +132,7 @@ class GameDialogFragment : DialogFragment() {
         SelectorGroup().apply {
             choiceMode = { selectorGroup, selector ->
                 selectorGroup.apply {
-                    find(selector.groupTag)?.let { setSelected(it, false) }
+//                    findSelectors(selector.groupTag)?.let { setSelected(it, false) }
                 }
                 selectorGroup.setSelected(selector, true)
             }
