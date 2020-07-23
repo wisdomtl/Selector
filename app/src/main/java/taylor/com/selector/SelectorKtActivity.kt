@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import cn.neoclub.uki.home.game.GameDialogFragment
 import taylor.com.layout.*
 import taylor.com.slectorkt.Selector
 import taylor.com.slectorkt.SelectorGroup
@@ -74,9 +75,8 @@ class SelectorKtActivity : AppCompatActivity() {
      */
     private val singleGroup = SelectorGroup().apply {
         choiceMode = SelectorGroup.MODE_SINGLE
-        selectChangeListener = { selectors: Set<Selector>, unselector: Selector? ->
-            val sel = selectors.fold("") { acc: String, selector: Selector -> "${acc} ,${selector.tag}" }
-            Log.v("ttaylor", "tag=selectkt, SelectorKtActivity.()  ${sel} is selected, ${unselector?.tag} is unselected")
+        selectChangeListener = { selectors: List<Selector>->
+
         }
     }
 
@@ -90,9 +90,7 @@ class SelectorKtActivity : AppCompatActivity() {
      */
     private val multipleGroup = SelectorGroup().apply {
         choiceMode = SelectorGroup.MODE_MULTIPLE
-        selectChangeListener = { selectors: Set<Selector>, unselector: Selector? ->
-            val sel = selectors.fold("") { acc: String, selector: Selector -> "${acc} ,${selector.tag}" }
-            Log.v("ttaylor", "tag=selectkt, SelectorKtActivity.()  ${sel} is selected, ${unselector?.tag} is unselected")
+        selectChangeListener = { selectors: List<Selector> ->
         }
     }
 
@@ -175,6 +173,16 @@ class SelectorKtActivity : AppCompatActivity() {
                 orientation = horizontal
                 center_horizontal = true
                 top_toBottomOf = "tvMultiMode"
+            }
+
+            Button {
+                layout_width = match_parent
+                layout_height = wrap_content
+                text = "show game selector"
+                top_toBottomOf = "multiple-container"
+                onClick = {_->
+                    GameDialogFragment().show(supportFragmentManager,"game")
+                }
             }
         }
     }

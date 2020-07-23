@@ -5,8 +5,10 @@ import java.io.Closeable
 data class GameType(
     var name: String?,
     var img: String?
-): Closeable {
+) : Closeable {
     override fun close() {
+        name = null
+        img = null
     }
 }
 
@@ -17,8 +19,16 @@ data class Games(
 
 data class GameAttrs(
     var title: String?,
-    var attrs: List<String>?
+    var attrs: List<GameAttrName>?
 )
+
+data class GameAttrName(
+    var name: String?
+) : Closeable {
+    override fun close() {
+        name = null
+    }
+}
 
 data class GameBean(
     var games: Games?,

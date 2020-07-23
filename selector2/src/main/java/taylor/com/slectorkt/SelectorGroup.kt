@@ -26,8 +26,9 @@ class SelectorGroup {
 
     /**
      * key is group tag and value is selected [Selector] in this group
+     * the reason why use [LinkedHashMap] is to keep the sequence of groups
      */
-    private var selectorMap = HashMap<String, MutableSet<Selector>>()
+    private var selectorMap = LinkedHashMap<String, MutableSet<Selector>>()
 
     /**
      * the choice mode of this [SelectorGroup], there are two default choice mode, which is [MODE_SINGLE] and [MODE_MULTIPLE]
@@ -38,7 +39,7 @@ class SelectorGroup {
      * if selection in this [SelectorGroup] is changed ,this lambda will be invoked,
      * override this to listen the change of selection
      */
-    var selectChangeListener: ((List<Selector>/*selected set*/, Selector?/*unselected*/) -> Unit)? = null
+    var selectChangeListener: ((List<Selector>/*selected set*/) -> Unit)? = null
 
     fun onSelectorClick(selector: Selector) {
         choiceMode?.invoke(this, selector)
@@ -62,9 +63,7 @@ class SelectorGroup {
         }
         selector.showSelectEffect(select)
         if (select) {
-            selectChangeListener?.invoke(selectorMap.flatMap { it.value }, null)
-        } else {
-            selectChangeListener?.invoke(selectorMap.flatMap { it.value }, selector)
+            selectChangeListener?.invoke(selectorMap.flatMap { it.value })
         }
     }
 

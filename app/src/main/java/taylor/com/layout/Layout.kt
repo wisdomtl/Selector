@@ -570,6 +570,22 @@ inline var TextView.fontFamily: Int
         typeface = ResourcesCompat.getFont(context, value)
     }
 
+inline var LineFeedLayout.horizontal_gap: Int
+    get() {
+        return -1
+    }
+    set(value) {
+        horizontalGap = value.dp
+    }
+
+inline var LineFeedLayout.vertical_gap: Int
+    get() {
+        return -1
+    }
+    set(value) {
+        verticalGap = value.dp
+    }
+
 inline var TextView.onTextChange: TextWatcher
     get() {
         return TextWatcher()
