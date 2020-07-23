@@ -25,7 +25,7 @@ class SelectorGroup {
     }
 
     /**
-     * the selected [Selector]s in this [SelectorGroup]
+     * key is group tag and value is selected [Selector] in this group
      */
     private var selectorMap = HashMap<String, MutableSet<Selector>>()
 
@@ -50,7 +50,7 @@ class SelectorGroup {
     fun find(groupTag: String) = selectorMap[groupTag]
 
     /**
-     * find [Selector] according to [groupTag] and [tag]
+     * find last selected [Selector] of [groupTag]
      */
     fun findLast(groupTag: String) = find(groupTag)?.takeUnless { it.isNullOrEmpty() }?.last()
 
