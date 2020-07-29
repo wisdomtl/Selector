@@ -343,40 +343,6 @@ class GameDialogFragment : DialogFragment() {
         val gameAttrs = gameBeans.gameAttrs?.filter { !it.title.isNullOrEmpty() }
 
         gameContainer.apply {
-//            // build game type
-//            titleView?.apply {
-//                text = gameBeans.games?.title
-//                margin_top = 15
-//                margin_bottom = 10
-//            }.also { addView(it) }
-//
-//            LineFeedLayout {
-//                layout_width = match_parent
-//                layout_height = wrap_content
-//                margin_end = 10
-//                horizontal_gap = 10
-//                vertical_gap = 10
-//
-//                gameTypes?.forEach { type ->
-//                    Selector {
-//                        layout_id = type.name!!
-//                        tag = type.name!!
-//                        groupTag = "gameTypes"
-//                        group = gameSelectorGroup
-//                        contentView = gameView
-//                        onSelectChange = onGameTypeChange
-//                        layout_width = 60
-//                        layout_height = 81
-//                        bind = Binder(type) { _, _ ->
-//                            tags[gameTypeKey] = type
-//                            find<TextView>("tvGame")?.text = type.name
-//                            find<ImageView>("ivGame")?.let {
-//                            }
-//                        }
-//                    }.takeIf { type.name in defautSelect }?.also { it.setSelect(true) }
-//                }
-//            }
-
             // build game attribute
             gameAttrs?.forEach { gameAttr ->
                 titleView?.apply {
@@ -402,7 +368,7 @@ class GameDialogFragment : DialogFragment() {
                             layout_width = 70
                             layout_height = 32
                             bind = Binder(attr) { _, _ ->
-                                tags[gameAttrKey] = attr
+                                this[gameAttrKey] = attr
                                 find<TextView>("tvGameAttrName")?.text = attr.name
                             }
                         }.takeIf { attr.name in defautSelect }?.also { it.setSelect(true) }

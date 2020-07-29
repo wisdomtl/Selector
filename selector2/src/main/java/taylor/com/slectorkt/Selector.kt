@@ -22,7 +22,7 @@ class Selector @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     /**
      * the values this [Selector] carry
      */
-    var tags = HashMap<Any?, Closeable?>()
+    private var tags = HashMap<Any?, Closeable?>()
 
     /**
      * the unique identifier for a [Selector]
@@ -42,7 +42,7 @@ class Selector @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     /**
      * the layout view for this [Selector]
      */
-    var contentView: View? = null
+     var contentView: View? = null
         set(value) {
             field = value
             value?.let {

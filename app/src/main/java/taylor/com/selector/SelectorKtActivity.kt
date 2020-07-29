@@ -207,7 +207,7 @@ class SelectorKtActivity : AppCompatActivity() {
                 layout_height = 50
                 contentView = ageSelectorView
                 onSelectChange = onAgeSelectStateChange
-                tags[key] = man
+                this[key] = man
                 bind = Binder(man){selector,data->
                     find<ImageView>("ivContent")?.setImageResource((data as Man).res)
                     find<TextView>("tvTitle")?.text = (data as Man).title
