@@ -62,9 +62,7 @@ class SelectorGroup {
             selectorMap[selector.groupTag]?.also { it.remove(selector) }
         }
         selector.showSelectEffect(select)
-        if (select) {
-            selectChangeListener?.invoke(selectorMap.flatMap { it.value })
-        }
+        selectChangeListener?.invoke(selectorMap.flatMap { it.value })
     }
 
     fun clear() {

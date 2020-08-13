@@ -76,7 +76,7 @@ class SelectorKtActivity : AppCompatActivity() {
     private val singleGroup = SelectorGroup().apply {
         choiceMode = SelectorGroup.MODE_SINGLE
         selectChangeListener = { selectors: List<Selector>->
-
+            // business logic here
         }
     }
 
@@ -125,21 +125,21 @@ class SelectorKtActivity : AppCompatActivity() {
                 center_horizontal = true
                 bind = Binder(Man(20, "man", R.drawable.man), selectorBindAction)
             }
-            Selector {
-                layout_id = "sOldMan"
-                tag = "old-man"
-                group = singleGroup
-                groupTag = "age"
-                layout_width = 90
-                layout_height = 50
-                contentView = ageSelectorView
-                onSelectChange = onAgeSelectStateChange
-                top_toBottomOf = "sMan"
-                start_toStartOf = parent_id
-                end_toEndOf = parent_id
-                horizontal_bias = 0.2f
-                bind = Binder(Man(40, "old-man", R.drawable.old_man), selectorBindAction)
-            }
+Selector {
+    layout_id = "sOldMan"
+    tag = "old-man"
+    group = singleGroup
+    groupTag = "age"
+    layout_width = 90
+    layout_height = 50
+    contentView = ageSelectorView
+    onSelectChange = onAgeSelectStateChange
+    top_toBottomOf = "sMan"
+    start_toStartOf = parent_id
+    end_toEndOf = parent_id
+    horizontal_bias = 0.2f
+    bind = Binder(Man(40, "old-man", R.drawable.old_man), selectorBindAction)
+}
             Selector {
                 layout_id = "sTeenager"
                 tag = "teenager"
