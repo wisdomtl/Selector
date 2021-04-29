@@ -22,7 +22,7 @@ class Selector @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     /**
      * the values this [Selector] carry
      */
-    private var tags = HashMap<Any?, Closeable?>()
+    var tags = HashMap<Any?, Closeable?>()
 
     /**
      * the unique identifier for a [Selector]
@@ -79,14 +79,6 @@ class Selector @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
 
     operator fun <T : Closeable> get(key: Key<T>): T? = (tags.getOrElse(key, { null })) as T
 
-    /**
-     * change the selection state of this [Selector]
-     */
-    fun setSelect(select: Boolean) {
-        group?.onSelectorClick(this)
-        showSelectEffect(select)
-    }
-
     fun showSelectEffect(select: Boolean) {
         if (isSelecting != select) {
             onSelectChange?.invoke(this, select)
@@ -103,7 +95,7 @@ class Selector @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
      * clear the values attached to this [Selector]
      */
     private fun clear() {
-        group?.clear()
+        group?.clear(this)
         tags.forEach { entry ->
             closeWithException(entry.value)
         }
@@ -117,7 +109,7 @@ class Selector @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     }
 
     override fun hashCode(): Int {
-        return tag.hashCode()
+        return if (tag.isNullOrEmpty()) "default".hashCode() else tag.hashCode()
     }
 
     /**

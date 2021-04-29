@@ -294,7 +294,7 @@ class GameDialogFragment : DialogFragment() {
 
     private val gameSelectorGroup by lazy {
         SelectorGroup().apply {
-            choiceMode = { selectorGroup, selector ->
+            choiceMode = { selectorGroup, selector,map ->
                 if (selector.groupTag != "匹配段位") {
                     selectorGroup.apply {
                         findLast(selector.groupTag)?.let { setSelected(it, false) }
@@ -371,7 +371,7 @@ class GameDialogFragment : DialogFragment() {
                                 this[gameAttrKey] = attr
                                 find<TextView>("tvGameAttrName")?.text = attr.name
                             }
-                        }.takeIf { attr.name in defautSelect }?.also { it.setSelect(true) }
+                        }.takeIf { attr.name in defautSelect }?.also { gameSelectorGroup.setSelected(it,true) }
                     }
                 }
             }
